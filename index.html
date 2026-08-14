@@ -69,17 +69,27 @@
   .slab.flat{background:rgba(255,255,255,.028);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)}
 
   /* ---- lock screen ---- */
-  #lock{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:32px;z-index:50}
+  #lock{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;z-index:50}
   .mark{font-size:13px;letter-spacing:.46em;text-transform:uppercase;color:var(--ink);font-weight:600;padding-left:.46em}
-  .mark-sub{font-size:11px;letter-spacing:.24em;color:var(--ink-4);text-transform:uppercase;margin-top:10px;text-align:center}
-  .monolith{width:74px;height:104px;border-radius:8px;
-    background:linear-gradient(155deg,#2B2E33 0%,#141519 40%,#0A0B0D 100%);
-    border:1px solid rgba(255,255,255,.12);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.22), inset -12px 0 24px -18px rgba(255,255,255,.3), 0 30px 60px -20px rgba(0,0,0,1);
-    position:relative;overflow:hidden}
-  .monolith::after{content:"";position:absolute;top:-30%;left:-40%;width:70%;height:190%;transform:rotate(18deg);
-    background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.14),rgba(255,255,255,0))}
-  .pwwrap{display:flex;flex-direction:column;gap:12px;width:100%;max-width:300px}
+  .mark-sub{font-size:9.5px;letter-spacing:.22em;color:var(--ink-4);text-transform:uppercase;margin-top:8px;text-align:center}
+
+  /* den runda stenskivan som omsluter allt */
+  .ring{width:min(84vw,336px);aspect-ratio:1;border-radius:50%;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:0 46px;
+    background:
+      radial-gradient(120% 110% at 30% 10%, #262930 0%, #16181C 40%, #0B0C0F 74%, #060709 100%);
+    border:1px solid rgba(255,255,255,.13);
+    box-shadow:inset 0 2px 0 rgba(255,255,255,.17),
+               inset 0 -40px 70px -40px rgba(0,0,0,.95),
+               0 44px 80px -34px rgba(0,0,0,1);}
+  .ring::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
+    background:radial-gradient(52% 34% at 30% 8%, rgba(255,255,255,.13) 0%, rgba(255,255,255,0) 70%)}
+  .ring::after{content:"";position:absolute;top:-28%;left:-46%;width:64%;height:170%;transform:rotate(19deg);
+    pointer-events:none;
+    background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.055),rgba(255,255,255,0))}
+  .ring > *{position:relative;z-index:1;width:100%}
+  .ring .mark{text-align:center}
+  .pwwrap{display:flex;flex-direction:column;gap:10px;width:100%}
   input[type=password],input[type=text]{
     width:100%;padding:14px 16px;border-radius:14px;border:1px solid var(--line);
     background:rgba(255,255,255,.045);color:var(--ink);font-size:16px;font-family:inherit;
@@ -91,7 +101,21 @@
     color:var(--ink);font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;
     box-shadow:inset 0 1px 0 rgba(255,255,255,.22);transition:transform .12s,filter .18s}
   button.primary:active{transform:scale(.985);filter:brightness(1.15)}
-  #lockmsg{font-size:13px;color:#E0A0A0;min-height:18px;text-align:center}
+  #lockmsg{font-size:12px;color:#E0A0A0;min-height:16px;text-align:center;line-height:1.35}
+  .faceid{display:flex;flex-direction:column;align-items:center;gap:9px;width:100%}
+  .faceid button{width:100%;padding:13px 14px;border-radius:14px;display:flex;align-items:center;
+    justify-content:center;gap:9px}
+  .faceid svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6;
+    stroke-linecap:round;stroke-linejoin:round}
+  .linkbtn{background:none;border:none;color:var(--ink-3);font-family:inherit;font-size:11.5px;
+    letter-spacing:.03em;cursor:pointer;padding:2px;text-decoration:underline;text-underline-offset:3px}
+  .remember{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;
+    color:var(--ink-3);letter-spacing:.02em;cursor:pointer;user-select:none}
+  .remember input{appearance:none;width:15px;height:15px;border-radius:5px;flex:0 0 15px;
+    border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.05);position:relative;margin:0}
+  .remember input:checked{background:rgba(255,255,255,.85);border-color:rgba(255,255,255,.85)}
+  .remember input:checked::after{content:"";position:absolute;left:4.5px;top:1.5px;width:4px;height:8px;
+    border:solid #0A0B0D;border-width:0 2px 2px 0;transform:rotate(42deg)}
 
   /* ---- app shell ---- */
   #app{display:none;padding:calc(var(--safe-t) + 18px) 18px calc(96px + var(--safe-b));max-width:720px;margin:0 auto}
@@ -216,19 +240,31 @@
 
 <div id="ptr"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 5v6h-6"/></svg></div>
 
-<a id="claudeb" href="https://claude.ai/code/new" target="_blank" rel="noopener" aria-label="Prata med Claude">
+<a id="claudeb" href="https://claude.ai/code/new" rel="noopener" aria-label="Prata med Claude" style="display:none">
   <svg viewBox="0 0 24 24"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0"/><path d="M12 17.5V21"/></svg>
 </a>
 
 <div id="lock">
-  <div class="monolith"></div>
-  <div>
-    <div class="mark">ELARA</div>
-    <div class="mark-sub">Personligt operativsystem</div>
-  </div>
-  <div class="pwwrap">
-    <input type="password" id="pw" placeholder="Lösenord" autocomplete="current-password" enterkeyhint="go">
-    <button class="primary" id="go">Lås upp</button>
+  <div class="ring">
+    <div>
+      <div class="mark">ELARA</div>
+      <div class="mark-sub">Personligt operativsystem</div>
+    </div>
+
+    <div class="faceid" id="bioblock" style="display:none">
+      <button class="primary" id="biogo">
+        <svg viewBox="0 0 24 24"><path d="M4 8.5V6a2 2 0 0 1 2-2h2.5M15.5 4H18a2 2 0 0 1 2 2v2.5M20 15.5V18a2 2 0 0 1-2 2h-2.5M8.5 20H6a2 2 0 0 1-2-2v-2.5"/><path d="M9 10v1.5M15 10v1.5"/><path d="M12 10v3.2a.8.8 0 0 1-.8.8h-.4"/><path d="M9 16c1.8 1.2 4.2 1.2 6 0"/></svg>
+        Lås upp med Face ID
+      </button>
+      <button class="linkbtn" id="usepw">Använd lösenord i stället</button>
+    </div>
+
+    <div class="pwwrap" id="pwblock">
+      <input type="password" id="pw" placeholder="Lösenord" autocomplete="current-password" enterkeyhint="go">
+      <button class="primary" id="go">Lås upp</button>
+      <label class="remember"><input type="checkbox" id="remember" checked> Kom ihåg mig i ett år</label>
+    </div>
+
     <div id="lockmsg"></div>
   </div>
 </div>
@@ -262,7 +298,7 @@
 </nav>
 
 <script>
-const PAYLOAD = "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";
+const PAYLOAD = "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";
 
 /* ---------- storage that can never throw ---------- */
 const mem = {};
@@ -529,7 +565,8 @@ function boot(){
   $('#lock').style.display='none';
   $('#app').style.display='block';
   $('#tabs').style.display='block';
-  $('#lockbtn').onclick = ()=>{ try{ sessionStorage.removeItem('elara_pw'); }catch(e){} hardRefresh(); };
+  $('#claudeb').style.display='flex';
+  $('#lockbtn').onclick = ()=>{ try{ sessionStorage.removeItem('elara_pw'); }catch(e){} clearVault(); hardRefresh(); };
   $('#topdate').textContent = now.toLocaleDateString('sv-SE',{weekday:'short',day:'numeric',month:'short'});
   $('#ft').textContent = 'Uppdaterad ' + D.updated;
   renderIdag(); renderTraning(); renderKost(); renderMal(); renderLiv();
@@ -542,7 +579,85 @@ function boot(){
   });
 }
 
-async function unlock(silentPw){
+/* ---------- valv: kom ihåg i ett år, skyddat av Face ID ---------- */
+const VAULT = 'elara_vault';
+const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+const b64e = b => btoa(String.fromCharCode(...new Uint8Array(b)));
+const b64d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+
+function getVault(){
+  try{
+    const v = JSON.parse(localStorage.getItem(VAULT) || 'null');
+    if(!v) return null;
+    if(Date.now() > v.exp){ localStorage.removeItem(VAULT); return null; }
+    return v;
+  }catch(e){ return null; }
+}
+function clearVault(){ try{ localStorage.removeItem(VAULT); }catch(e){} }
+
+async function aesKey(raw){ return crypto.subtle.importKey('raw', raw, {name:'AES-GCM'}, false, ['encrypt','decrypt']); }
+async function seal(key, text){
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, new TextEncoder().encode(text));
+  return { iv: b64e(iv), ct: b64e(ct) };
+}
+async function open_(key, iv, ct){
+  const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv: b64d(iv)}, key, b64d(ct));
+  return new TextDecoder().decode(pt);
+}
+
+async function bioAvailable(){
+  try{
+    return !!(window.PublicKeyCredential &&
+      await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable());
+  }catch(e){ return false; }
+}
+async function prfAssertKey(credId, salt){
+  const a = await navigator.credentials.get({ publicKey:{
+    challenge: crypto.getRandomValues(new Uint8Array(32)),
+    rpId: location.hostname,
+    allowCredentials: [{ type:'public-key', id: b64d(credId) }],
+    userVerification: 'required', timeout: 60000,
+    extensions: { prf: { eval: { first: b64d(salt) } } }
+  }});
+  const r = a.getClientExtensionResults().prf?.results?.first;
+  return r ? aesKey(r) : null;
+}
+async function bioAssert(credId){
+  await navigator.credentials.get({ publicKey:{
+    challenge: crypto.getRandomValues(new Uint8Array(32)),
+    rpId: location.hostname,
+    allowCredentials: [{ type:'public-key', id: b64d(credId) }],
+    userVerification: 'required', timeout: 60000
+  }});
+}
+/* registrerar en passkey — måste ske inuti ett tryck */
+async function bioRegister(){
+  const cred = await navigator.credentials.create({ publicKey:{
+    challenge: crypto.getRandomValues(new Uint8Array(32)),
+    rp: { name:'Elara', id: location.hostname },
+    user: { id: crypto.getRandomValues(new Uint8Array(16)), name:'ken', displayName:'Ken' },
+    pubKeyCredParams: [{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+    authenticatorSelection: { authenticatorAttachment:'platform', residentKey:'preferred', userVerification:'required' },
+    timeout: 60000, attestation:'none', extensions:{ prf:{} }
+  }});
+  return { credId: b64e(cred.rawId), prf: !!cred.getClientExtensionResults().prf?.enabled };
+}
+
+/* sparar lösenordet i ett år, låst med lokal nyckel (uppgraderas till Face ID-nyckel vid första biotrycket) */
+async function rememberMe(pw){
+  const localKeyRaw = crypto.getRandomValues(new Uint8Array(32));
+  const key = await aesKey(localKeyRaw);
+  const { iv, ct } = await seal(key, pw);
+  const v = { mode:'local', lk: b64e(localKeyRaw), iv, ct, credId:null, salt:null,
+              exp: Date.now() + YEAR_MS };
+  try{ localStorage.setItem(VAULT, JSON.stringify(v)); }catch(e){}
+}
+
+/* ---------- upplåsning ---------- */
+function showPwBlock(){ $('#pwblock').style.display='flex'; $('#bioblock').style.display='none'; $('#pw').focus(); }
+
+async function unlock(silentPw, fromVault){
   const pw = silentPw || $('#pw').value;
   if(!pw) return false;
   const msg = $('#lockmsg');
@@ -550,12 +665,14 @@ async function unlock(silentPw){
   if(!silentPw){ msg.textContent = 'Låser upp…'; msg.style.color='var(--ink-3)'; }
   try{
     D = await decryptPayload(PAYLOAD, pw);
-    // sparas bara för den här appsessionen, så att omladdning inte kastar ut dig
     try{ sessionStorage.setItem('elara_pw', pw); }catch(e){}
+    if(!silentPw && $('#remember')?.checked && !getVault()) await rememberMe(pw);
     boot();
     return true;
   }catch(e){
     try{ sessionStorage.removeItem('elara_pw'); }catch(_){}
+    if(fromVault){ clearVault(); msg.style.color='#E0A0A0';
+      msg.textContent = 'Sparad inloggning ogiltig — skriv lösenordet.'; showPwBlock(); return false; }
     if(!silentPw){
       msg.style.color='#E0A0A0';
       msg.textContent = 'Fel lösenord.';
@@ -564,14 +681,73 @@ async function unlock(silentPw){
     return false;
   }
 }
+
+async function bioUnlock(){
+  const msg = $('#lockmsg');
+  let v = getVault();
+  if(!v){ showPwBlock(); return; }
+  msg.style.color='var(--ink-3)'; msg.textContent='Väntar på Face ID…';
+  try{
+    if(!v.credId){
+      // första gången: registrera passkey inuti detta tryck
+      const reg = await bioRegister();
+      v.credId = reg.credId;
+      if(reg.prf){
+        const salt = crypto.getRandomValues(new Uint8Array(32));
+        const pk = await prfAssertKey(v.credId, b64e(salt));
+        if(pk){
+          const pw = await open_(await aesKey(b64d(v.lk)), v.iv, v.ct);
+          const s = await seal(pk, pw);
+          v = { ...v, mode:'prf', salt:b64e(salt), iv:s.iv, ct:s.ct, lk:null };
+        }
+      }
+      localStorage.setItem(VAULT, JSON.stringify(v));
+    }
+    let key;
+    if(v.mode === 'prf'){
+      key = await prfAssertKey(v.credId, v.salt);
+      if(!key) throw new Error('prf saknas');
+    } else {
+      await bioAssert(v.credId);
+      key = await aesKey(b64d(v.lk));
+    }
+    const pw = await open_(key, v.iv, v.ct);
+    msg.textContent = 'Låser upp…';
+    await unlock(pw, true);
+  }catch(e){
+    msg.style.color='#E0A0A0';
+    msg.textContent = 'Face ID avbröts.';
+    $('#bioblock').style.display='flex';
+  }
+}
+
 $('#go').onclick = ()=>unlock();
 $('#pw').addEventListener('keydown', e=>{ if(e.key==='Enter') unlock(); });
+$('#biogo').onclick = bioUnlock;
+$('#usepw').onclick = ()=>{ $('#lockmsg').textContent=''; showPwBlock(); };
 
-/* auto-upplåsning efter omladdning inom samma appsession */
+/* ---------- start ---------- */
 (async ()=>{
+  // 1. omladdning inom samma appsession → rakt in
   let saved = null;
   try{ saved = sessionStorage.getItem('elara_pw'); }catch(e){}
-  if(saved) await unlock(saved);
+  if(saved && await unlock(saved)) return;
+
+  // 2. sparad inloggning i valvet
+  const v = getVault();
+  if(v){
+    if(await bioAvailable()){
+      $('#pwblock').style.display='none';
+      $('#bioblock').style.display='flex';
+      return;
+    }
+    // ingen biometri på enheten → lås upp direkt från valvet
+    try{
+      const pw = await open_(await aesKey(b64d(v.lk)), v.iv, v.ct);
+      if(await unlock(pw, true)) return;
+    }catch(e){ clearVault(); }
+  }
+  $('#pw').focus();
 })();
 </script>
 </body>
